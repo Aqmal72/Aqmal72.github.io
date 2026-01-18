@@ -6,542 +6,581 @@
   <title>TIS E-Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
   <style>
     body {
       box-sizing: border-box;
     }
-    * {
+    .font-heading {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .font-body {
       font-family: 'Inter', sans-serif;
     }
-    h1, h2, h3, .nav-link {
-      font-family: 'Sora', sans-serif;
-    }
-    .gradient-text {
-      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .card-hover:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.4);
-    }
-    .nav-link {
+    
+    /* Animated Background */
+    .animated-bg {
       position: relative;
+      overflow: hidden;
     }
-    .nav-link::after {
+    .animated-bg::before {
       content: '';
       position: absolute;
-      bottom: -4px;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+    .animated-bg::after {
+      content: '';
+      position: absolute;
+      top: 0;
       left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(168, 85, 247, 0.6);
+      border-radius: 50%;
+      animation: float 15s infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+    }
+    
+    /* Navigation buttons with enhanced effects */
+    .nav-btn {
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
       width: 0;
-      height: 2px;
-      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-      transition: width 0.3s ease;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
     }
-    .nav-link:hover::after, .nav-link.active::after {
-      width: 100%;
+    .nav-btn:hover::before {
+      width: 300px;
+      height: 300px;
     }
-    .section-card {
-      backdrop-filter: blur(10px);
-      background: rgba(17, 24, 39, 0.95);
-      border-color: rgba(168, 85, 247, 0.2) !important;
+    .nav-btn:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 40px -10px rgba(168, 85, 247, 0.8);
     }
-    .icon-container {
-      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    .nav-btn:active {
+      transform: translateY(-2px) scale(0.98);
     }
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
+    
+    /* Text glow effect */
+    .text-glow {
+      text-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(168, 85, 247, 0.3);
+      animation: glow 3s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(168, 85, 247, 0.3); }
+      50% { text-shadow: 0 0 30px rgba(168, 85, 247, 0.8), 0 0 60px rgba(168, 85, 247, 0.5); }
+    }
+    
+    /* Card entrance animation */
+    .card-entrance {
+      animation: slideUp 0.6s ease-out backwards;
+    }
+    
+    @keyframes slideUp {
+      from { 
+        opacity: 0; 
         transform: translateY(30px);
       }
-      to {
-        opacity: 1;
+      to { 
+        opacity: 1; 
         transform: translateY(0);
       }
     }
-    .animate-in {
-      animation: fadeInUp 0.6s ease forwards;
+    
+    .section-content {
+      animation: fadeIn 0.4s ease-out;
     }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-    .delay-5 { animation-delay: 0.5s; }
-    .content-section {
-      display: none;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .content-section.active {
-      display: block;
+    .back-btn {
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover {
+      transform: translateX(-4px);
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
- <body class="h-full bg-gradient-to-br from-gray-900 via-purple-900 to-black">
-  <div class="h-full w-full overflow-auto"><!-- Navigation -->
-   <nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-lg border-b border-purple-500/30">
-    <div class="max-w-6xl mx-auto px-6 py-4">
-     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-3">
-       <div class="w-10 h-10 rounded-xl icon-container flex items-center justify-center">
-        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-       </div><span id="nav-title" class="font-semibold text-white">TIS Portfolio</span>
-      </div>
-      <div class="hidden md:flex items-center gap-6"><button onclick="showSection('home')" class="nav-link text-sm font-medium text-gray-300 hover:text-white active" data-section="home">Home</button> <button onclick="showSection('talk1')" class="nav-link text-sm font-medium text-gray-300 hover:text-white" data-section="talk1">Talk 1</button> <button onclick="showSection('talk2')" class="nav-link text-sm font-medium text-gray-300 hover:text-white" data-section="talk2">Talk 2</button> <button onclick="showSection('visit1')" class="nav-link text-sm font-medium text-gray-300 hover:text-white" data-section="visit1">Visit 1</button> <button onclick="showSection('visit2')" class="nav-link text-sm font-medium text-gray-300 hover:text-white" data-section="visit2">Visit 2</button> <button onclick="showSection('design')" class="nav-link text-sm font-medium text-gray-300 hover:text-white" data-section="design">Design Thinking</button>
-      </div><button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-gray-800">
-       <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-       </svg></button>
-     </div><!-- Mobile Menu -->
-     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-purple-500/30 pt-4">
-      <div class="flex flex-col gap-3"><button onclick="showSection('home'); toggleMobileMenu()" class="text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-300">Home</button> <button onclick="showSection('talk1'); toggleMobileMenu()" class="text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-300">Industrial Talk 1</button> <button onclick="showSection('talk2'); toggleMobileMenu()" class="text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-300">Industrial Talk 2</button> <button onclick="showSection('visit1'); toggleMobileMenu()" class="text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-300">Industrial Visit 1</button> <button onclick="showSection('visit2'); toggleMobileMenu()" class="text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-300">Industrial Visit 2</button> <button onclick="showSection('design'); toggleMobileMenu()" class="text-left px-4 py-2 rounded-lg hover:bg-gray-800 text-gray-300">Design Thinking</button>
-      </div>
+ <body class="h-full font-body">
+  <div id="app" class="min-h-full w-full bg-black text-white animated-bg"><!-- Floating particles -->
+   <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+   <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+   <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+   <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+   <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+   <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+   <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+   <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+   <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div><!-- Home View -->
+   <div id="home-view" class="min-h-full w-full flex flex-col" style="position: relative; z-index: 1;"><!-- Header -->
+    <header class="w-full py-8 px-6 text-center bg-gradient-to-b from-purple-950 to-black">
+     <div class="max-w-4xl mx-auto">
+      <h1 id="portfolio-title" class="font-heading text-4xl md:text-5xl font-bold text-white mb-3 text-glow">TIS E-Portfolio</h1>
+      <p id="student-name" class="text-xl text-purple-400 font-medium mb-1">Nur Aqmal Imani</p>
+      <p id="course-name" class="text-purple-300">Technology and Information Systems</p>
      </div>
-    </div>
-   </nav><!-- Home Section -->
-   <section id="section-home" class="content-section active">
-    <div class="max-w-6xl mx-auto px-6 py-16"><!-- Hero -->
-     <div class="text-center mb-16 animate-in">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/20 text-purple-300 text-sm font-medium mb-6 border border-purple-500/30"><span>📚</span> <span id="course-badge">Technology and Information Systems</span>
-      </div>
-      <h1 id="hero-name" class="text-5xl md:text-6xl font-bold text-white mb-4">Your Name</h1>
-      <p id="hero-tagline" class="text-xl text-gray-300 max-w-2xl mx-auto">Exploring industry insights and innovative solutions through experiential learning</p>
-     </div><!-- Quick Navigation Cards -->
-     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"><button onclick="showSection('talk1')" class="section-card rounded-2xl p-8 border border-slate-200 card-hover text-left animate-in delay-1 opacity-0">
-       <div class="w-14 h-14 rounded-xl icon-container flex items-center justify-center mb-6">
-        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-        </svg>
-       </div><h3 class="text-xl font-semibold text-white mb-2">Industrial Talk 1</h3><p class="text-gray-300 text-sm">First session with industry experts</p>
-       <div class="mt-4 flex items-center text-purple-400 text-sm font-medium">
-        View Content 
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-       </div></button> <button onclick="showSection('talk2')" class="section-card rounded-2xl p-8 border border-slate-200 card-hover text-left animate-in delay-2 opacity-0">
-       <div class="w-14 h-14 rounded-xl icon-container flex items-center justify-center mb-6">
-        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-        </svg>
-       </div><h3 class="text-xl font-semibold text-white mb-2">Industrial Talk 2</h3><p class="text-gray-300 text-sm">Second session with thought leaders</p>
-       <div class="mt-4 flex items-center text-purple-400 text-sm font-medium">
-        View Content 
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-       </div></button> <button onclick="showSection('visit1')" class="section-card rounded-2xl p-8 border border-slate-200 card-hover text-left animate-in delay-3 opacity-0">
-       <div class="w-14 h-14 rounded-xl icon-container flex items-center justify-center mb-6">
-        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-        </svg>
-       </div><h3 class="text-xl font-semibold text-white mb-2">Industrial Visit 1</h3><p class="text-gray-300 text-sm">First on-site company experience</p>
-       <div class="mt-4 flex items-center text-purple-400 text-sm font-medium">
-        View Content 
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-       </div></button> <button onclick="showSection('visit2')" class="section-card rounded-2xl p-8 border border-slate-200 card-hover text-left animate-in delay-4 opacity-0">
-       <div class="w-14 h-14 rounded-xl icon-container flex items-center justify-center mb-6">
-        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-        </svg>
-       </div><h3 class="text-xl font-semibold text-white mb-2">Industrial Visit 2</h3><p class="text-gray-300 text-sm">Second on-site company experience</p>
-       <div class="mt-4 flex items-center text-purple-400 text-sm font-medium">
-        View Content 
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-       </div></button> <button onclick="showSection('design')" class="section-card rounded-2xl p-8 border border-slate-200 card-hover text-left animate-in delay-5 opacity-0">
-       <div class="w-14 h-14 rounded-xl icon-container flex items-center justify-center mb-6">
-        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-       </div><h3 class="text-xl font-semibold text-white mb-2">Design Thinking</h3><p class="text-gray-300 text-sm">Creative problem-solving project showcase</p>
-       <div class="mt-4 flex items-center text-purple-400 text-sm font-medium">
-        View Content 
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-       </div></button>
-     </div><!-- About Section -->
-     <div class="section-card rounded-2xl p-8 md:p-12 border border-slate-200 animate-in delay-6 opacity-0">
-      <h2 class="text-2xl font-bold text-white mb-4">About This Portfolio</h2>
-      <p class="text-gray-300 leading-relaxed">This e-portfolio documents my learning journey through the Technology and Information Systems course. It showcases reflections and insights gained from industrial talks, hands-on experiences during industrial visits, and the creative process behind our Design Thinking project. Each section represents a unique opportunity to bridge academic knowledge with real-world industry practices.</p>
-     </div>
-    </div>
-   </section><!-- Industrial Talk 1 Section -->
-   <section id="section-talk1" class="content-section">
-    <div class="max-w-4xl mx-auto px-6 py-16">
-     <div class="mb-12"><button onclick="showSection('home')" class="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6">
-       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-       </svg> Back to Home </button>
-      <div class="flex items-center gap-2 mb-4"><span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium">Session 1</span>
-      </div>
-      <h1 class="text-4xl font-bold text-white mb-4">Industrial Talk 1</h1>
-      <p class="text-gray-300 text-lg">Insights and learnings from the first industrial talk session</p>
-     </div><!-- Talk Header -->
-     <div class="section-card rounded-2xl border border-slate-200 overflow-hidden mb-8">
-      <div class="h-64 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-       <div class="text-center text-white">
-        <div class="text-8xl mb-4">
+    </header><!-- Navigation Grid -->
+    <main class="flex-1 w-full px-6 py-10">
+     <div class="max-w-4xl mx-auto">
+      <h2 class="font-heading text-2xl font-semibold text-purple-200 mb-6 text-center">Course Activities</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Industry Talk 1 --> <button onclick="showSection('industry-talk-1')" class="nav-btn card-entrance bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-left hover:from-purple-500 hover:to-purple-700 border border-purple-500/30" style="animation-delay: 0.1s; position: relative; z-index: 10;">
+        <div class="text-3xl mb-3">
          🎤
-        </div>
-        <h2 class="text-2xl font-bold">Industrial Talk 1</h2>
-       </div>
-      </div>
-      <div class="p-8">
-       <div class="grid md:grid-cols-2 gap-6">
-        <div>
-         <h3 class="font-semibold text-white mb-2">📅 Date</h3>
-         <p class="text-gray-300">[Add date here]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-white mb-2">🏢 Speaker/Company</h3>
-         <p class="text-gray-300">[Add speaker and company details]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-white mb-2">📍 Location</h3>
-         <p class="text-gray-300">[Add location]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-white mb-2">⏱️ Duration</h3>
-         <p class="text-gray-300">[Add duration]</p>
-        </div>
-       </div>
-      </div>
-     </div><!-- Content Sections -->
-     <div class="space-y-8">
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-white mb-4">📝 Summary</h3>
-       <p class="text-gray-300">Add a brief summary of what was covered in this industrial talk session.</p>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-white mb-4">💡 Key Takeaways</h3>
-       <ul class="space-y-3 text-gray-300">
-        <li class="flex items-start gap-3"><span class="text-purple-400 mt-1">•</span> <span>Add your first key takeaway from the talk</span></li>
-        <li class="flex items-start gap-3"><span class="text-purple-400 mt-1">•</span> <span>Add your second key takeaway</span></li>
-        <li class="flex items-start gap-3"><span class="text-purple-400 mt-1">•</span> <span>Add your third key takeaway</span></li>
-       </ul>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-white mb-4">🤔 Personal Reflection</h3>
-       <p class="text-gray-300">Share your personal thoughts, insights, and how this talk relates to your learning journey in the TIS course.</p>
-      </div>
-     </div>
-    </div>
-   </section><!-- Industrial Talk 2 Section -->
-   <section id="section-talk2" class="content-section">
-    <div class="max-w-4xl mx-auto px-6 py-16">
-     <div class="mb-12"><button onclick="showSection('home')" class="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6">
-       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-       </svg> Back to Home </button>
-      <div class="flex items-center gap-2 mb-4"><span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">Session 2</span>
-      </div>
-      <h1 class="text-4xl font-bold text-slate-900 mb-4">Industrial Talk 2</h1>
-      <p class="text-slate-600 text-lg">Insights and learnings from the second industrial talk session</p>
-     </div><!-- Talk Header -->
-     <div class="section-card rounded-2xl border border-slate-200 overflow-hidden mb-8">
-      <div class="h-64 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-       <div class="text-center text-white">
-        <div class="text-8xl mb-4">
+        </div><h3 class="font-heading font-semibold text-lg text-white">Industry Talk 1</h3><p class="text-purple-200 text-sm mt-1">Guest speaker insights</p></button> <!-- Industry Talk 2 --> <button onclick="showSection('industry-talk-2')" class="nav-btn card-entrance bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-left hover:from-purple-500 hover:to-purple-700 border border-purple-500/30" style="animation-delay: 0.2s; position: relative; z-index: 10;">
+        <div class="text-3xl mb-3">
          🎙️
-        </div>
-        <h2 class="text-2xl font-bold">Industrial Talk 2</h2>
-       </div>
-      </div>
-      <div class="p-8">
-       <div class="grid md:grid-cols-2 gap-6">
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">📅 Date</h3>
-         <p class="text-slate-600">[Add date here]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">🏢 Speaker/Company</h3>
-         <p class="text-slate-600">[Add speaker and company details]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">�� Location</h3>
-         <p class="text-slate-600">[Add location]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">⏱️ Duration</h3>
-         <p class="text-slate-600">[Add duration]</p>
-        </div>
-       </div>
-      </div>
-     </div><!-- Content Sections -->
-     <div class="space-y-8">
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">📝 Summary</h3>
-       <p class="text-slate-600">Add a brief summary of what was covered in this industrial talk session.</p>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">💡 Key Takeaways</h3>
-       <ul class="space-y-3 text-slate-600">
-        <li class="flex items-start gap-3"><span class="text-purple-600 mt-1">•</span> <span>Add your first key takeaway from the talk</span></li>
-        <li class="flex items-start gap-3"><span class="text-purple-600 mt-1">•</span> <span>Add your second key takeaway</span></li>
-        <li class="flex items-start gap-3"><span class="text-purple-600 mt-1">•</span> <span>Add your third key takeaway</span></li>
-       </ul>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">🤔 Personal Reflection</h3>
-       <p class="text-slate-600">Share your personal thoughts, insights, and how this talk relates to your learning journey in the TIS course.</p>
-      </div>
-     </div>
-    </div>
-   </section><!-- Industrial Visit 1 Section -->
-   <section id="section-visit1" class="content-section">
-    <div class="max-w-4xl mx-auto px-6 py-16">
-     <div class="mb-12"><button onclick="showSection('home')" class="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6">
-       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-       </svg> Back to Home </button>
-      <div class="flex items-center gap-2 mb-4"><span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">Visit 1</span>
-      </div>
-      <h1 class="text-4xl font-bold text-slate-900 mb-4">Industrial Visit 1</h1>
-      <p class="text-slate-600 text-lg">Hands-on experience and observations from the first company visit</p>
-     </div><!-- Visit Header -->
-     <div class="section-card rounded-2xl border border-slate-200 overflow-hidden mb-8">
-      <div class="h-64 bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-       <div class="text-center text-white">
-        <div class="text-8xl mb-4">
+        </div><h3 class="font-heading font-semibold text-lg text-white">Industry Talk 2</h3><p class="text-purple-200 text-sm mt-1">Professional perspectives</p></button> <!-- PC Assemble Lab --> <button onclick="showSection('pc-assemble')" class="nav-btn card-entrance bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-left hover:from-purple-500 hover:to-purple-700 border border-purple-500/30" style="animation-delay: 0.3s; position: relative; z-index: 10;">
+        <div class="text-3xl mb-3">
+         🖥️
+        </div><h3 class="font-heading font-semibold text-lg text-white">PC Assemble Lab</h3><p class="text-purple-200 text-sm mt-1">Hardware experience</p></button> <!-- Industrial Visit 1 --> <button onclick="showSection('industrial-visit-1')" class="nav-btn card-entrance bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-left hover:from-purple-500 hover:to-purple-700 border border-purple-500/30" style="animation-delay: 0.4s; position: relative; z-index: 10;">
+        <div class="text-3xl mb-3">
          🏭
-        </div>
-        <h2 class="text-2xl font-bold">Industrial Visit 1</h2>
-       </div>
-      </div>
-      <div class="p-8">
-       <div class="grid md:grid-cols-2 gap-6">
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">📅 Date</h3>
-         <p class="text-slate-600">[Add date here]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">🏢 Company</h3>
-         <p class="text-slate-600">[Add company name]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">📍 Location</h3>
-         <p class="text-slate-600">[Add location]</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">🏭 Industry</h3>
-         <p class="text-slate-600">[Add industry type]</p>
-        </div>
-       </div>
-      </div>
-     </div><!-- Content Sections -->
-     <div class="space-y-8">
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">🏢 Company Overview</h3>
-       <p class="text-slate-600">Add information about the company, its history, products/services, and market position.</p>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">👀 Observations</h3>
-       <p class="text-slate-600">Document what you observed during the visit - workplace culture, processes, technology, facilities, etc.</p>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">💡 Key Learnings</h3>
-       <ul class="space-y-3 text-slate-600">
-        <li class="flex items-start gap-3"><span class="text-emerald-600 mt-1">•</span> <span>Add your first key learning from the visit</span></li>
-        <li class="flex items-start gap-3"><span class="text-emerald-600 mt-1">•</span> <span>Add your second key learning</span></li>
-        <li class="flex items-start gap-3"><span class="text-emerald-600 mt-1">•</span> <span>Add your third key learning</span></li>
-       </ul>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">🤔 Personal Reflection</h3>
-       <p class="text-slate-600">Share your thoughts on how this visit enhanced your understanding of industry practices and connects to your academic learning.</p>
-      </div>
-     </div>
-    </div>
-   </section><!-- Industrial Visit 2 Section -->
-   <section id="section-visit2" class="content-section">
-    <div class="max-w-4xl mx-auto px-6 py-16">
-     <div class="mb-12"><button onclick="showSection('home')" class="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6">
-       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-       </svg> Back to Home </button>
-      <div class="flex items-center gap-2 mb-4"><span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-medium">Visit 2</span>
-      </div>
-      <h1 class="text-4xl font-bold text-slate-900 mb-4">Industrial Visit 2</h1>
-      <p class="text-slate-600 text-lg">Hands-on experience and observations from the second company visit</p>
-     </div><!-- Visit Header -->
-     <div class="section-card rounded-2xl border border-slate-200 overflow-hidden mb-8">
-      <div class="h-64 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
-       <div class="text-center text-white">
-        <div class="text-8xl mb-4">
+        </div><h3 class="font-heading font-semibold text-lg text-white">Industrial Visit 1</h3><p class="text-purple-200 text-sm mt-1">Company exploration</p></button> <!-- Industrial Visit 2 --> <button onclick="showSection('industrial-visit-2')" class="nav-btn card-entrance bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-left hover:from-purple-500 hover:to-purple-700 border border-purple-500/30" style="animation-delay: 0.5s; position: relative; z-index: 10;">
+        <div class="text-3xl mb-3">
          🏢
-        </div>
-        <h2 class="text-2xl font-bold">Industrial Visit 2</h2>
-       </div>
-      </div>
-      <div class="p-8">
-       <div class="grid md:grid-cols-2 gap-6">
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">📅 Date</h3>
-         <p class="text-slate-600">8/1/2026</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">🏢 Company</h3>
-         <p class="text-slate-600">Johor Port</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">📍 Location</h3>
-         <p class="text-slate-600">Pasir Gudang</p>
-        </div>
-        <div>
-         <h3 class="font-semibold text-slate-900 mb-2">🏭 Industry</h3>
-         <p class="text-slate-600">Port</p>
-        </div>
-       </div>
-      </div>
-     </div><!-- Content Sections -->
-     <div class="space-y-8">
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">🏢 Company Overview</h3>
-       <p class="text-slate-600">Add information about the company, its history, products/services, and market position.</p>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">👀 Observations</h3>
-       <p class="text-slate-600">Document what you observed during the visit - workplace culture, processes, technology, facilities, etc.</p>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">💡 Key Learnings</h3>
-       <ul class="space-y-3 text-slate-600">
-        <li class="flex items-start gap-3"><span class="text-teal-600 mt-1">•</span> <span>Add your first key learning from the visit</span></li>
-        <li class="flex items-start gap-3"><span class="text-teal-600 mt-1">•</span> <span>Add your second key learning</span></li>
-        <li class="flex items-start gap-3"><span class="text-teal-600 mt-1">•</span> <span>Add your third key learning</span></li>
-       </ul>
-      </div>
-      <div class="section-card rounded-2xl border border-slate-200 p-8">
-       <h3 class="text-2xl font-bold text-slate-900 mb-4">🤔 Personal Reflection</h3>
-       <p class="text-slate-600">Share your thoughts on how this visit enhanced your understanding of industry practices and connects to your academic learning.</p>
+        </div><h3 class="font-heading font-semibold text-lg text-white">Industrial Visit 2</h3><p class="text-purple-200 text-sm mt-1">Industry exposure</p></button> <!-- Design Thinking --> <button onclick="showSection('design-thinking')" class="nav-btn card-entrance bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 text-left hover:from-purple-500 hover:to-purple-700 border border-purple-500/30" style="animation-delay: 0.6s; position: relative; z-index: 10;">
+        <div class="text-3xl mb-3">
+         💡
+        </div><h3 class="font-heading font-semibold text-lg text-white">Design Thinking</h3><p class="text-purple-200 text-sm mt-1">Innovation projects</p></button>
       </div>
      </div>
-    </div>
-   </section><!-- Design Thinking Section -->
-   <section id="section-design" class="content-section">
-    <div class="max-w-6xl mx-auto px-6 py-16">
-     <div class="mb-12"><button onclick="showSection('home')" class="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6">
+    </main><!-- Footer -->
+    <footer class="w-full py-6 px-6 text-center border-t border-purple-900">
+     <p class="text-purple-400 text-sm">© 2024 E-Portfolio • Technology and Information Systems</p>
+    </footer>
+   </div><!-- Section Views (Hidden by default) -->
+   <div id="section-view" class="hidden min-h-full w-full flex flex-col" style="position: relative; z-index: 10;">
+    <div class="w-full px-6 py-6 bg-purple-950 border-b border-purple-500/20">
+     <div class="max-w-4xl mx-auto"><button onclick="goHome()" class="back-btn inline-flex items-center text-purple-300 hover:text-white transition-all duration-200" style="position: relative; z-index: 20;">
        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
        </svg> Back to Home </button>
-      <h1 class="text-4xl font-bold text-slate-900 mb-4">Design Thinking Project</h1>
-      <p class="text-slate-600 text-lg"></p>
-     </div><!-- Design Thinking Stages -->
-     <div class="section-card rounded-2xl border border-slate-200 p-8 mb-8">
-      <h2 class="text-2xl font-bold text-slate-900 mb-6">Project Overview</h2>
-      <p class="text-slate-600 mb-8">Add your Design Thinking project overview, problem statement, and solution here.</p>
-      <div class="grid md:grid-cols-5 gap-4">
-       <div class="text-center p-4 rounded-xl bg-gradient-to-br from-rose-50 to-rose-100 border border-rose-200">
-        <div class="text-3xl mb-2">
-
-   </section><!-- Footer -->
-   <footer class="bg-black/50 border-t border-purple-500/30 py-8 mt-auto">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-     <p class="text-gray-400 text-sm">TIS E-Portfolio • Technology and Information Systems</p>
+     </div>
     </div>
-   </footer>
+    <main class="flex-1 w-full px-6 py-10">
+     <div class="max-w-4xl mx-auto section-content">
+      <div id="section-icon" class="text-5xl mb-4"></div>
+      <h2 id="section-title" class="font-heading text-3xl md:text-4xl font-bold text-white mb-4"></h2>
+      <div id="section-content" class="space-y-6"><!-- Content will be dynamically inserted here -->
+      </div>
+     </div>
+    </main>
+   </div>
   </div>
   <script>
     const defaultConfig = {
+      portfolio_title: 'TIS E-Portfolio',
       student_name: 'Nur Aqmal Imani',
-      course_title: 'Technology and Information Systems',
-      tagline: 'Here\'s a showcase of all my Assignments and Projects',
-      primary_color: '#667eea',
-      secondary_color: '#764ba2',
-      background_color: '#f8fafc',
-      text_color: '#1e293b',
-      accent_color: '#4f46e5'
+      course_name: 'Technology and Information Systems',
+      font_family: 'Space Grotesk',
+      font_size: 16,
+      background_color: '#0a0a0a',
+      surface_color: '#1a0f2e',
+      text_color: '#ffffff',
+      primary_action_color: '#a855f7',
+      secondary_action_color: '#7c3aed'
     };
 
-    let config = { ...defaultConfig };
+    const sections = {
+      'industry-talk-1': { 
+        icon: '🎤', 
+        title: 'Industry Talk 1',
+        content: {
+          overview: 'An insightful session with industry professionals sharing their experiences and expertise in the technology sector.',
+          keyTakeaways: [
+            'Understanding current industry trends and demands',
+            'Professional skills required in the tech workplace',
+            'Career pathways and opportunities in technology',
+            'Real-world applications of theoretical knowledge'
+          ],
+          reflection: 'This session provided valuable insights into the practical applications of technology in the professional world. The speaker\'s experience highlighted the importance of continuous learning and adaptability in the fast-paced tech industry.',
+          date: 'Semester 2, 2025/2026'
+        }
+      },
+      'industry-talk-2': { 
+        icon: '🎙️', 
+        title: 'Industry Talk 2',
+        content: {
+          overview: 'A comprehensive discussion on emerging technologies and their impact on various industries, featuring expert speakers from leading tech companies.',
+          keyTakeaways: [
+            'Emerging technologies and their applications',
+            'Innovation strategies in technology companies',
+            'Professional development and skill enhancement',
+            'Networking and industry connections'
+          ],
+          reflection: 'The second industry talk expanded my understanding of how technology drives innovation across different sectors. The speaker\'s insights on problem-solving approaches and collaboration in tech teams were particularly enlightening.',
+          date: 'Semester 2, 2025/2026'
+        }
+      },
+      'pc-assemble': { 
+        icon: '�����️', 
+        title: 'PC Assemble Lab',
+        content: {
+          overview: 'Hands-on experience in assembling a complete computer system, understanding hardware components, and troubleshooting common issues.',
+          keyTakeaways: [
+            'Identification of computer hardware components',
+            'Proper assembly techniques and safety procedures',
+            'BIOS configuration and system setup',
+            'Hardware troubleshooting and problem-solving',
+            'Understanding component compatibility'
+          ],
+          reflection: 'This practical lab session transformed my theoretical knowledge into hands-on skills. Working directly with hardware components gave me confidence in understanding how computer systems function at the physical level. The troubleshooting experience was invaluable.',
+          skillsGained: [
+            'Hardware assembly and installation',
+            'Technical problem-solving',
+            'Attention to detail and precision',
+            'Following technical procedures'
+          ],
+          date: 'Semester 2, 2025/2026'
+        }
+      },
+      'industrial-visit-1': { 
+        icon: '🏭', 
+        title: 'Industrial Visit 1',
+        content: {
+          overview: 'An educational visit to a technology company to observe real-world operations, infrastructure, and professional work environments.',
+          keyTakeaways: [
+            'Workplace organization and culture in tech companies',
+            'Infrastructure and technology implementation',
+            'Team collaboration and project management',
+            'Industry standards and best practices'
+          ],
+          observations: [
+            'Modern office setup with collaborative spaces',
+            'Advanced technology infrastructure and systems',
+            'Professional communication and teamwork dynamics',
+            'Quality assurance and testing procedures'
+          ],
+          reflection: 'Visiting the company premises provided a realistic view of the professional tech environment. Seeing how teams collaborate on projects and manage technology infrastructure reinforced the importance of both technical and soft skills in the workplace.',
+          date: 'Semester 2, 2025/2026'
+        }
+      },
+      'industrial-visit-2': { 
+        icon: '🏢', 
+        title: 'Industrial Visit 2',
+        content: {
+          overview: 'A comprehensive tour of a leading technology organization, exploring different departments and understanding various roles in the tech industry.',
+          keyTakeaways: [
+            'Different career paths in technology sector',
+            'Project lifecycle and development processes',
+            'Client interaction and requirement gathering',
+            'Innovation and research & development'
+          ],
+          observations: [
+            'Diverse team structures and specializations',
+            'Agile methodology implementation',
+            'Client presentation and demonstration techniques',
+            'Continuous integration and deployment practices'
+          ],
+          reflection: 'The second industrial visit deepened my understanding of how large-scale technology projects are managed. Observing the workflow from planning to deployment gave me insights into the complexity and coordination required in professional software development.',
+          date: 'Semester 2, 2025/2026'
+        }
+      },
+      'design-thinking': { 
+        icon: '💡', 
+        title: 'Design Thinking Projects',
+        content: {
+          overview: 'Application of design thinking methodology to solve real-world problems through innovation, creativity, and user-centered approaches.',
+          keyTakeaways: [
+            'Understanding the design thinking process',
+            'Empathy and user research techniques',
+            'Ideation and brainstorming methods',
+            'Prototyping and iterative development',
+            'Testing and gathering user feedback'
+          ],
+          projectPhases: [
+            'Empathize: Understanding user needs and challenges',
+            'Define: Clearly articulating the problem statement',
+            'Ideate: Generating creative solutions',
+            'Prototype: Building tangible representations',
+            'Test: Gathering feedback and refining solutions'
+          ],
+          reflection: 'Engaging in design thinking projects transformed my approach to problem-solving. The emphasis on empathy and user-centered design helped me understand that technology solutions must address real human needs. The iterative process taught me the value of feedback and continuous improvement.',
+          skillsGained: [
+            'Creative problem-solving',
+            'User research and empathy',
+            'Collaboration and teamwork',
+            'Presentation and communication',
+            'Iterative development'
+          ],
+          date: 'Semester 2, 2025/2026'
+        }
+      }
+    };
 
     function showSection(sectionId) {
-      document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
+      const section = sections[sectionId];
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('section-view').classList.remove('hidden');
+      document.getElementById('section-icon').textContent = section.icon;
+      document.getElementById('section-title').textContent = section.title;
+      
+      // Build detailed content
+      const contentDiv = document.getElementById('section-content');
+      contentDiv.innerHTML = '';
+      
+      const content = section.content;
+      
+      // Date badge
+      const dateBadge = document.createElement('div');
+      dateBadge.className = 'inline-block bg-purple-600/30 text-purple-300 px-4 py-2 rounded-full text-sm mb-6 border border-purple-500/30';
+      dateBadge.textContent = content.date;
+      contentDiv.appendChild(dateBadge);
+      
+      // Overview section
+      const overviewCard = document.createElement('div');
+      overviewCard.className = 'bg-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-500/30';
+      overviewCard.innerHTML = `
+        <h3 class="font-heading text-xl font-semibold text-white mb-3">📋 Overview</h3>
+        <p class="text-purple-100 leading-relaxed">${content.overview}</p>
+      `;
+      contentDiv.appendChild(overviewCard);
+      
+      // Key Takeaways
+      if (content.keyTakeaways) {
+        const takeawaysCard = document.createElement('div');
+        takeawaysCard.className = 'bg-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-500/30';
+        takeawaysCard.innerHTML = `
+          <h3 class="font-heading text-xl font-semibold text-white mb-4">🎯 Key Takeaways</h3>
+          <ul class="space-y-3">
+            ${content.keyTakeaways.map(item => `
+              <li class="flex items-start text-purple-100">
+                <span class="text-purple-400 mr-3 mt-1">▸</span>
+                <span>${item}</span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+        contentDiv.appendChild(takeawaysCard);
+      }
+      
+      // Project Phases (for design thinking)
+      if (content.projectPhases) {
+        const phasesCard = document.createElement('div');
+        phasesCard.className = 'bg-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-500/30';
+        phasesCard.innerHTML = `
+          <h3 class="font-heading text-xl font-semibold text-white mb-4">🔄 Design Thinking Process</h3>
+          <div class="space-y-3">
+            ${content.projectPhases.map((phase, index) => `
+              <div class="flex items-start">
+                <span class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-semibold mr-3 flex-shrink-0">${index + 1}</span>
+                <p class="text-purple-100 pt-1">${phase}</p>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        contentDiv.appendChild(phasesCard);
+      }
+      
+      // Observations (for industrial visits)
+      if (content.observations) {
+        const observationsCard = document.createElement('div');
+        observationsCard.className = 'bg-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-500/30';
+        observationsCard.innerHTML = `
+          <h3 class="font-heading text-xl font-semibold text-white mb-4">👀 Key Observations</h3>
+          <ul class="space-y-3">
+            ${content.observations.map(item => `
+              <li class="flex items-start text-purple-100">
+                <span class="text-purple-400 mr-3 mt-1">▸</span>
+                <span>${item}</span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+        contentDiv.appendChild(observationsCard);
+      }
+      
+      // Skills Gained
+      if (content.skillsGained) {
+        const skillsCard = document.createElement('div');
+        skillsCard.className = 'bg-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-500/30';
+        skillsCard.innerHTML = `
+          <h3 class="font-heading text-xl font-semibold text-white mb-4">💪 Skills Gained</h3>
+          <div class="flex flex-wrap gap-2">
+            ${content.skillsGained.map(skill => `
+              <span class="bg-purple-600/40 text-purple-200 px-4 py-2 rounded-lg text-sm border border-purple-500/30">${skill}</span>
+            `).join('')}
+          </div>
+        `;
+        contentDiv.appendChild(skillsCard);
+      }
+      
+      // Reflection
+      const reflectionCard = document.createElement('div');
+      reflectionCard.className = 'bg-gradient-to-br from-purple-900/50 to-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-400/30';
+      reflectionCard.innerHTML = `
+        <h3 class="font-heading text-xl font-semibold text-white mb-3">💭 Personal Reflection</h3>
+        <p class="text-purple-100 leading-relaxed italic">${content.reflection}</p>
+      `;
+      contentDiv.appendChild(reflectionCard);
+      
+      // PDF Resources Section
+      const pdfCard = document.createElement('div');
+      pdfCard.className = 'bg-purple-950/50 rounded-xl p-6 md:p-8 border border-purple-500/30';
+      pdfCard.innerHTML = `
+        <h3 class="font-heading text-xl font-semibold text-white mb-4">📄 Resources & Documents</h3>
+        <div class="space-y-3">
+          <p class="text-purple-200 text-sm mb-4">Access presentations, notes, and documentation from this activity:</p>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between bg-purple-800/40 hover:bg-purple-700/60 rounded-lg p-4 border border-purple-500/30 transition-all duration-300">
+            <div class="flex items-center">
+              <div class="bg-purple-600 rounded-lg p-3 mr-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-white font-medium group-hover:text-purple-200 transition-colors">Activity Documentation.pdf</p>
+                <p class="text-purple-300 text-sm">Click to view or download</p>
+              </div>
+            </div>
+            <svg class="w-5 h-5 text-purple-400 group-hover:text-purple-200 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <div class="bg-purple-900/30 rounded-lg p-4 border border-purple-600/20">
+            <p class="text-purple-300 text-sm flex items-start">
+              <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+              <span>Note: Update the PDF link above with your actual document URL. You can upload your PDF to a cloud storage service and paste the sharing link here.</span>
+            </p>
+          </div>
+        </div>
+      `;
+      contentDiv.appendChild(pdfCard);
+    }
+
+    function goHome() {
+      document.getElementById('section-view').classList.add('hidden');
+      document.getElementById('home-view').classList.remove('hidden');
+    }
+
+    async function onConfigChange(config) {
+      const title = config.portfolio_title || defaultConfig.portfolio_title;
+      const name = config.student_name || defaultConfig.student_name;
+      const course = config.course_name || defaultConfig.course_name;
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const fontSize = config.font_size || defaultConfig.font_size;
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+      document.getElementById('portfolio-title').textContent = title;
+      document.getElementById('student-name').textContent = name;
+      document.getElementById('course-name').textContent = course;
+
+      // Apply font
+      const fontStack = `${fontFamily}, sans-serif`;
+      document.querySelectorAll('.font-heading').forEach(el => {
+        el.style.fontFamily = fontStack;
       });
-      document.getElementById('section-' + sectionId).classList.add('active');
-      
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.dataset.section === sectionId) {
-          link.classList.add('active');
-        }
+
+      // Apply font size scaling
+      document.getElementById('portfolio-title').style.fontSize = `${fontSize * 2.5}px`;
+      document.getElementById('student-name').style.fontSize = `${fontSize * 1.25}px`;
+      document.getElementById('course-name').style.fontSize = `${fontSize}px`;
+
+      // Apply colors
+      document.getElementById('app').style.backgroundColor = bgColor;
+      document.querySelectorAll('.bg-slate-800').forEach(el => {
+        el.style.backgroundColor = surfaceColor;
       });
-      
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('portfolio-title').style.color = textColor;
     }
 
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
-    }
-
-    async function onConfigChange(newConfig) {
-      config = { ...defaultConfig, ...newConfig };
-      
-      const heroName = document.getElementById('hero-name');
-      const heroTagline = document.getElementById('hero-tagline');
-      const courseBadge = document.getElementById('course-badge');
-      
-      if (heroName) heroName.textContent = config.student_name || defaultConfig.student_name;
-      if (heroTagline) heroTagline.textContent = config.tagline || defaultConfig.tagline;
-      if (courseBadge) courseBadge.textContent = config.course_title || defaultConfig.course_title;
-    }
-
-    function mapToCapabilities(cfg) {
+    function mapToCapabilities(config) {
       return {
         recolorables: [
           {
-            get: () => cfg.background_color || defaultConfig.background_color,
-            set: (value) => {
-              cfg.background_color = value;
-              window.elementSdk.setConfig({ background_color: value });
-            }
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
           },
           {
-            get: () => cfg.primary_color || defaultConfig.primary_color,
-            set: (value) => {
-              cfg.primary_color = value;
-              window.elementSdk.setConfig({ primary_color: value });
-            }
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (value) => { config.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); }
           },
           {
-            get: () => cfg.text_color || defaultConfig.text_color,
-            set: (value) => {
-              cfg.text_color = value;
-              window.elementSdk.setConfig({ text_color: value });
-            }
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
           },
           {
-            get: () => cfg.accent_color || defaultConfig.accent_color,
-            set: (value) => {
-              cfg.accent_color = value;
-              window.elementSdk.setConfig({ accent_color: value });
-            }
+            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+            set: (value) => { config.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); }
+          },
+          {
+            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (value) => { config.secondary_action_color = value; window.elementSdk.setConfig({ secondary_action_color: value }); }
           }
         ],
         borderables: [],
         fontEditable: {
-          get: () => cfg.font_family || 'Sora',
-          set: (value) => {
-            cfg.font_family = value;
-            window.elementSdk.setConfig({ font_family: value });
-          }
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
         },
         fontSizeable: {
-          get: () => cfg.font_size || 16,
-          set: (value) => {
-            cfg.font_size = value;
-            window.elementSdk.setConfig({ font_size: value });
-          }
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => { config.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
         }
       };
     }
 
-    function mapToEditPanelValues(cfg) {
+    function mapToEditPanelValues(config) {
       return new Map([
-        ['student_name', cfg.student_name || defaultConfig.student_name],
-        ['course_title', cfg.course_title || defaultConfig.course_title],
-        ['tagline', cfg.tagline || defaultConfig.tagline]
+        ['portfolio_title', config.portfolio_title || defaultConfig.portfolio_title],
+        ['student_name', config.student_name || defaultConfig.student_name],
+        ['course_name', config.course_name || defaultConfig.course_name]
       ]);
     }
 
+    // Initialize SDK
     if (window.elementSdk) {
       window.elementSdk.init({
         defaultConfig,
@@ -551,5 +590,5 @@
       });
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bfe8f1d1104b4d6',t:'MTc2ODc0NDIwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bfec3a691645615',t:'MTc2ODc0NjM1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
